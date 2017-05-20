@@ -40,9 +40,12 @@ var create = function(){
 
 // update game state each frame
 var update = function(){
-    background.tilePosition.y += 2;
-
+    backgroundMove()
     moveSpace();
+}
+
+var backgroundMove = function() {
+    background.tilePosition.y += 2;
 }
 
 var moveSpace = function() {
