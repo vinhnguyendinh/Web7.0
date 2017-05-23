@@ -1,5 +1,9 @@
 var Nakama = {};
-Nakama.configs = {};
+Nakama.configs = {
+  PLAYER_SPEED      : 10,
+  BACKGROUND_SPEED  : 5,
+  BULLET_SPEED      : 40
+};
 
 window.onload = function(){
   Nakama.game = new Phaser.Game(640,960,Phaser.AUTO,'',
@@ -35,7 +39,24 @@ var create = function(){
   Nakama.keyboard = Nakama.game.input.keyboard;
 
   background = Nakama.game.add.tileSprite(0, 0, 640, 960, 'background');
-  Nakama.player = Nakama.game.add.sprite(300, 100, 'assets', 'Spaceship1-Player.png');
+  createPlayerAndPartner();
+}
+
+function createPlayerAndPartner() {
+  Nakama.player = new ShipController(300, 700, "Spaceship1-Player.png", {
+    up    : Phaser.Keyboard.UP,
+    down  : Phaser.Keyboard.DOWN,
+    left  : Phaser.Keyboard.LEFT,
+    right : Phaser.Keyboard.RIGHT,
+    fire  : Phaser.Keyboard.CONTROL
+  });
+  Nakama.partner = new ShipController(200, 650, "Spaceship1-Partner.png", {
+    up    : Phaser.Keyboard.W,
+    down  : Phaser.Keyboard.S,
+    left  : Phaser.Keyboard.A,
+    right : Phaser.Keyboard.D,
+    fire  : Phaser.Keyboard.SPACEBAR
+  });
 }
 
 // update game state each frame
@@ -45,32 +66,25 @@ var update = function(){
 }
 
 var backgroundMove = function() {
-    background.tilePosition.y += 2;
+    background.tilePosition.y += 4;
 }
 
 var moveSpace = function() {
-    if (Nakama.keyboard.isDown(Phaser.Keyboard.UP)) {
-      var y = Nakama.player.position.y;
-      if (y > 0) {
-        Nakama.player.position.y -= 10;
-      }
-    } else if (Nakama.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-      var y = Nakama.player.position.y;
-      if (y < Nakama.game.height - 78) {
-        Nakama.player.position.y += 10;
-      }
-    } else if (Nakama.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      var x = Nakama.player.position.x;
-      if (x > 0) {
-        Nakama.player.position.x -= 10;
-      }
-    } else if (Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-      var x = Nakama.player.position.x;
-      if (x < Nakama.game.width - 78) {
-        Nakama.player.position.x += 10;
-      }
-    }
+    Nakama.player.update();
+    Nakama.partner.update();
 }
+//
+// function countDown(time) {
+//   for (var i = time; i > 0; i--) {
+//     setTimeout(callback, (time - i) * 1000, i);
+//   }
+// }
+//
+// function callback(second) {
+//     console.log(second);
+// }
+//
+// countDown(5);
 
 // before camera render (mostly for debug)
 var render = function(){}
