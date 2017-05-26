@@ -1,4 +1,5 @@
 class ShipController {
+
     constructor(x, y, spriteName, configs) {
         this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
         this.configs = configs;
@@ -19,7 +20,8 @@ class ShipController {
     }
 
     fire() {
-      this.bullet = new BulletController(this.sprite.position.x + 19, this.sprite.position.y - (this.sprite.height / 2), "BulletType1.png");
-      this.bullet.fire();
+      var bullet = new BulletController(this.sprite.x, this.sprite.y, "BulletType1.png");
+      bullet.sprite.position.x += (this.sprite.width - bullet.sprite.width)/2;
     }
+
 }

@@ -62,14 +62,14 @@ function createPlayerAndPartner() {
 // update game state each frame
 var update = function(){
     backgroundMove()
-    moveSpace();
+    moveOurSpace();
 }
 
 var backgroundMove = function() {
-    background.tilePosition.y += 4;
+    background.tilePosition.y += Nakama.configs.BACKGROUND_SPEED;
 }
 
-var moveSpace = function() {
+var moveOurSpace = function() {
     Nakama.player.update();
     Nakama.partner.update();
 }
