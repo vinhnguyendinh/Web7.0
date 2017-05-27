@@ -51,14 +51,16 @@ function createPlayerAndPartner() {
         down  : Phaser.Keyboard.DOWN,
         left  : Phaser.Keyboard.LEFT,
         right : Phaser.Keyboard.RIGHT,
-        fire  : Phaser.Keyboard.CONTROL,
+        fire  : Phaser.Keyboard.ENTER,
+        isPlayer: 1
     });
-    Nakama.partner = new ShipType1Controller(200, 650, {
+    Nakama.partner = new ShipType2Controller(200, 650, {
         up    : Phaser.Keyboard.W,
         down  : Phaser.Keyboard.S,
         left  : Phaser.Keyboard.A,
         right : Phaser.Keyboard.D,
         fire  : Phaser.Keyboard.SPACEBAR,
+        isPlayer: 0
     });
 }
 

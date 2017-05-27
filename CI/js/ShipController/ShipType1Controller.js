@@ -2,7 +2,8 @@ class ShipType1Controller extends ShipController {
     constructor(x, y, configs) {
         configs.cooldown = 0.3;
         configs.speed = 500;
-        super(x, y, 'Spaceship1-Player.png', configs);
+        var spriteName = configs.isPlayer == 1 ? 'Spaceship1-Player.png' : 'Spaceship1-Partner.png';
+        super(x, y, spriteName, configs);
     }
 
     fire() {
@@ -14,7 +15,7 @@ class ShipType1Controller extends ShipController {
     }
 
     createBullet(direction) {
-        new BulletController(this.sprite.position.x, this.sprite.position.y, "BulletType1.png", {
+        new BulletType1Controller(this.sprite.position.x, this.sprite.position.y, {
             direction: direction
         });
     }
