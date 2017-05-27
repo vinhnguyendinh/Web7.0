@@ -1,8 +1,9 @@
 class ShipController {
 
     constructor(x, y, spriteName, configs) {
-        this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
-        Nakama.game.physics.arcade.enable(this.sprite);
+        this.sprite = Nakama.playerGroup.create(x, y, 'assets', spriteName);
+        // this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
+        // Nakama.game.physics.arcade.enable(this.sprite);
         this.sprite.body.collideWorldBounds = true;
         this.sprite.anchor = new Phaser.Point(0.5, 0.5);
 
