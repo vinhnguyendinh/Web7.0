@@ -46,21 +46,19 @@ var create = function(){
 }
 
 function createPlayerAndPartner() {
-    Nakama.player = new ShipController(300, 700, "Spaceship1-Player.png", {
+    Nakama.player = new ShipType1Controller(300, 700, {
         up    : Phaser.Keyboard.UP,
         down  : Phaser.Keyboard.DOWN,
         left  : Phaser.Keyboard.LEFT,
         right : Phaser.Keyboard.RIGHT,
         fire  : Phaser.Keyboard.CONTROL,
-        cooldown: 0.3
     });
-    Nakama.partner = new ShipController(200, 650, "Spaceship1-Partner.png", {
+    Nakama.partner = new ShipType1Controller(200, 650, {
         up    : Phaser.Keyboard.W,
         down  : Phaser.Keyboard.S,
         left  : Phaser.Keyboard.A,
         right : Phaser.Keyboard.D,
         fire  : Phaser.Keyboard.SPACEBAR,
-        cooldown: 0.3
     });
 }
 
