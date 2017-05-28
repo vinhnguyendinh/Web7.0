@@ -19,6 +19,4 @@ class ShipType2Controller extends ShipController {
             direction: direction
         });
     }
-
-
 }

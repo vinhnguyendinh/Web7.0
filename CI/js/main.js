@@ -39,35 +39,74 @@ var create = function(){
     Nakama.keyboard = Nakama.game.input.keyboard;
 
     background = Nakama.game.add.tileSprite(0, 0, 640, 960, 'background');
+    Nakama.enemyGroup = Nakama.game.add.physicsGroup();
     Nakama.bulletGroup = Nakama.game.add.physicsGroup();
     Nakama.playerGroup = Nakama.game.add.physicsGroup();
 
-    createPlayerAndPartner();
+    showPromptToCreateSpace();
 }
 
-function createPlayerAndPartner() {
-    Nakama.player = new ShipType1Controller(300, 700, {
-        up    : Phaser.Keyboard.UP,
-        down  : Phaser.Keyboard.DOWN,
-        left  : Phaser.Keyboard.LEFT,
-        right : Phaser.Keyboard.RIGHT,
-        fire  : Phaser.Keyboard.ENTER,
-        isPlayer: 1
-    });
-    Nakama.partner = new ShipType2Controller(200, 650, {
-        up    : Phaser.Keyboard.W,
-        down  : Phaser.Keyboard.S,
-        left  : Phaser.Keyboard.A,
-        right : Phaser.Keyboard.D,
-        fire  : Phaser.Keyboard.SPACEBAR,
-        isPlayer: 0
-    });
+function showPromptToCreateSpace() {
+    var configsForPlayer = {
+        up        : Phaser.Keyboard.UP,
+        down      : Phaser.Keyboard.DOWN,
+        left      : Phaser.Keyboard.LEFT,
+        right     : Phaser.Keyboard.RIGHT,
+        fire      : Phaser.Keyboard.ENTER,
+        isPlayer  : 1
+    };
+    var configsForPartner = {
+        up        : Phaser.Keyboard.W,
+        down      : Phaser.Keyboard.S,
+        left      : Phaser.Keyboard.A,
+        right     : Phaser.Keyboard.D,
+        fire      : Phaser.Keyboard.SPACEBAR,
+        isPlayer  : 0
+    };
+
+    do {
+        var typeShip = prompt("You have to fill type ship you want? \n1. Ship type 1\n2. Ship type 2\n3. Ship type 3");
+        switch (Number(typeShip)) {
+            case 1:
+                createPlayerAndPartner(1, 1, configsForPlayer, configsForPartner);
+                break;
+            case 2:
+                createPlayerAndPartner(2, 2, configsForPlayer, configsForPartner);
+                break;
+            case 3:
+                createPlayerAndPartner(3, 3, configsForPlayer, configsForPartner);
+                break;
+            default:
+                break;
+        }
+
+        if (typeShip < '1' || typeShip > '3') {
+            alert("You have to fill number between 1 - 3. Please refill !");
+        }
+    } while (typeShip < '1' || typeShip > '3');
+}
+
+function createPlayerAndPartner(typePlayer, typePartner, configsForPlayer, configsForPartner) {
+    // Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
+    Nakama.player = createShipControllerWithType(300, 700, typePlayer, configsForPlayer);
+    Nakama.partner = createShipControllerWithType(500, 700, typePartner, configsForPartner);
+}
+
+var createShipControllerWithType = function(x, y, type, configs) {
+    if (type == 1) {
+        return new ShipType1Controller(x, y, configs);
+    } else if (type == 2) {
+        return new ShipType2Controller(x, y, configs);
+    } else if (type == 3) {
+        return new ShipType3Controller(x, y, configs);
+    }
 }
 
 // update game state each frame
 var update = function(){
-    backgroundMove()
-    moveOurSpace();
+      backgroundMove()
+      moveOurSpace();
+      // Nakama.enemy.update();
 }
 
 var backgroundMove = function() {
