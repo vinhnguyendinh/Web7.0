@@ -62,55 +62,69 @@ var create = function(){
     showPromptToCreateSpace();
 }
 
-function showPromptToCreateSpace() {
-    var configsForPlayer = Nakama.configs.PLAYER_1_CONTROL;
-    var configsForPartner = Nakama.configs.PLAYER_2_CONTROL;
-
-    do {
-        var typeShip = prompt("You have to fill type ship you want? \n1. Ship type 1\n2. Ship type 2\n3. Ship type 3");
-        typeShip = parseInt(typeShip);
-        createPlayerAndPartner(typeShip, typeShip, configsForPlayer, configsForPartner);
-
-        if (isNaN(typeShip) || typeShip < 1 || typeShip > 3) {
-            alert("You have to fill number between 1 - 3. Please refill !");
-        }
-    } while (isNaN(typeShip) || typeShip < 1 || typeShip > 3);
-}
-
-function createPlayerAndPartner(typePlayer, typePartner, configsForPlayer, configsForPartner) {
-    // create enemy
-    Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
-
-    Nakama.player = createShipControllerWithType(300, 700, typePlayer, configsForPlayer);
-    Nakama.partner = createShipControllerWithType(500, 700, typePartner, configsForPartner);
-}
-
-var createShipControllerWithType = function(x, y, type, configs) {
-    if (type == 1) {
-        return new ShipType1Controller(x, y, configs);
-    } else if (type == 2) {
-        return new ShipType2Controller(x, y, configs);
-    } else if (type == 3) {
-        return new ShipType3Controller(x, y, configs);
-    }
-}
-
 // update game state each frame
 var update = function(){
       backgroundMove()
       moveOurSpace();
-      
+
       Nakama.enemy.update();
 }
+
+// before camera render (mostly for debug)
+var render = function(){}
+
+// MARK: - For Create
+
+function showPromptToCreateSpace() {
+    var configsForPlayer = Nakama.configs.PLAYER_1_CONTROL;
+    var configsForPartner = Nakama.configs.PLAYER_2_CONTROL;
+
+    var ShipConstructors = [
+        ShipType1Controller,
+        ShipType2Controller,
+        ShipType3Controller
+    ];
+
+    Nakama.players = [];
+
+    Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
+
+    var player1Constructor = getShipConstructor(1, ShipConstructors);
+    Nakama.players.push(
+        new player1Constructor(200, 700, configsForPlayer)
+    );
+
+    var player2Constructor = getShipConstructor(2, ShipConstructors);
+    Nakama.players.push(
+        new player2Constructor(400, 700, configsForPartner)
+    );
+}
+
+var getShipConstructor = function(playerNumber, ShipConstructors) {
+    do {
+        var input = parseInt(prompt(`Please enter player ${playerNumber} ship type:`));
+
+        if (isNaN(input) || input < 1 || input > ShipConstructors.length) {
+            alert(`You have to fill number between 1 - ${ShipConstructors.length}. Please refill !`);
+        }
+    } while (isNaN(input) || input < 1 || input > ShipConstructors.length);
+    return ShipConstructors[input-1];
+}
+
+// MARK: - For Update
 
 var backgroundMove = function() {
     background.tilePosition.y += Nakama.configs.BACKGROUND_SPEED;
 }
 
 var moveOurSpace = function() {
-    Nakama.player.update();
-    Nakama.partner.update();
+    for (player of Nakama.players) {
+        player.update();
+    }
 }
+
+// MARK: - Callback
+
 //
 // function countDown(time) {
 //   for (var i = time; i > 0; i--) {
@@ -123,6 +137,3 @@ var moveOurSpace = function() {
 // }
 //
 // countDown(5);
-
-// before camera render (mostly for debug)
-var render = function(){}
