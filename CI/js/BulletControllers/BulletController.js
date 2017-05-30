@@ -5,7 +5,7 @@ class BulletController {
         // Nakama.game.physics.arcade.enable(this.sprite);
         this.sprite.checkWorldBounds = true;
         this.sprite.outOfBoundsKill = true;
-        this.sprite.body.velocity = configs.direction.setMagnitude(Nakama.configs.BULLET_SPEED);
+        this.sprite.body.velocity = configs.direction.setMagnitude(configs.speed);
         this.sprite.anchor = new Phaser.Point(0.5, 0.5);
     }
 

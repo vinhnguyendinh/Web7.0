@@ -2,7 +2,23 @@ var Nakama = {};
 Nakama.configs = {
     PLAYER_SPEED      : 500,
     BACKGROUND_SPEED  : 5,
-    BULLET_SPEED      : 1500
+    BULLET_SPEED      : 1500,
+    PLAYER_1_CONTROL  : {
+        up        : Phaser.Keyboard.UP,
+        down      : Phaser.Keyboard.DOWN,
+        left      : Phaser.Keyboard.LEFT,
+        right     : Phaser.Keyboard.RIGHT,
+        fire      : Phaser.Keyboard.ENTER,
+        spriteSuffix: "Player"
+    },
+    PLAYER_2_CONTROL  : {
+        up        : Phaser.Keyboard.W,
+        down      : Phaser.Keyboard.S,
+        left      : Phaser.Keyboard.A,
+        right     : Phaser.Keyboard.D,
+        fire      : Phaser.Keyboard.SPACEBAR,
+        spriteSuffix: "Partner"
+    }
 };
 
 window.onload = function(){
@@ -47,47 +63,24 @@ var create = function(){
 }
 
 function showPromptToCreateSpace() {
-    var configsForPlayer = {
-        up        : Phaser.Keyboard.UP,
-        down      : Phaser.Keyboard.DOWN,
-        left      : Phaser.Keyboard.LEFT,
-        right     : Phaser.Keyboard.RIGHT,
-        fire      : Phaser.Keyboard.ENTER,
-        isPlayer  : 1
-    };
-    var configsForPartner = {
-        up        : Phaser.Keyboard.W,
-        down      : Phaser.Keyboard.S,
-        left      : Phaser.Keyboard.A,
-        right     : Phaser.Keyboard.D,
-        fire      : Phaser.Keyboard.SPACEBAR,
-        isPlayer  : 0
-    };
+    var configsForPlayer = Nakama.configs.PLAYER_1_CONTROL;
+    var configsForPartner = Nakama.configs.PLAYER_2_CONTROL;
 
     do {
         var typeShip = prompt("You have to fill type ship you want? \n1. Ship type 1\n2. Ship type 2\n3. Ship type 3");
-        switch (Number(typeShip)) {
-            case 1:
-                createPlayerAndPartner(1, 1, configsForPlayer, configsForPartner);
-                break;
-            case 2:
-                createPlayerAndPartner(2, 2, configsForPlayer, configsForPartner);
-                break;
-            case 3:
-                createPlayerAndPartner(3, 3, configsForPlayer, configsForPartner);
-                break;
-            default:
-                break;
-        }
+        typeShip = parseInt(typeShip);
+        createPlayerAndPartner(typeShip, typeShip, configsForPlayer, configsForPartner);
 
-        if (typeShip < '1' || typeShip > '3') {
+        if (isNaN(typeShip) || typeShip < 1 || typeShip > 3) {
             alert("You have to fill number between 1 - 3. Please refill !");
         }
-    } while (typeShip < '1' || typeShip > '3');
+    } while (isNaN(typeShip) || typeShip < 1 || typeShip > 3);
 }
 
 function createPlayerAndPartner(typePlayer, typePartner, configsForPlayer, configsForPartner) {
-    // Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
+    // create enemy
+    Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
+
     Nakama.player = createShipControllerWithType(300, 700, typePlayer, configsForPlayer);
     Nakama.partner = createShipControllerWithType(500, 700, typePartner, configsForPartner);
 }
@@ -106,7 +99,8 @@ var createShipControllerWithType = function(x, y, type, configs) {
 var update = function(){
       backgroundMove()
       moveOurSpace();
-      // Nakama.enemy.update();
+      
+      Nakama.enemy.update();
 }
 
 var backgroundMove = function() {

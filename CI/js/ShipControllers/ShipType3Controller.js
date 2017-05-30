@@ -1,8 +1,10 @@
 class ShipType3Controller extends ShipController {
     constructor(x, y, configs) {
-        configs.cooldown = 0;
-        configs.speed = 600;
-        var spriteName = configs.isPlayer == 1 ? 'Spaceship3-Player.png' : 'Spaceship3-Partner.png';
+        Object.assign(configs, {
+            cooldown  : 0.3,
+            speed     : 500
+        });
+        var spriteName = `Spaceship3-${configs.spriteSuffix}.png`;
         super(x, y, spriteName, configs);
     }
 
