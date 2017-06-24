@@ -26,4 +26,5 @@
 
 .menu-vertical span {
   display: block;
+  border-bottom: 1px solid #FFFFFF;
 }
