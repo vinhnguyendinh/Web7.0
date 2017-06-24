@@ -1,0 +1,59 @@
+p {
+  color: red;
+}
+
+h1 {
+  text-decoration: underline;
+}
+
+#blue_background {
+  background-color: deepskyblue;
+  width: 300px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+[href] {
+  font-size: 60px;
+}
+
+[target="_blank"] {
+  color: blue;
+}
+
+ul li {
+  text-decoration: line-through;
+}
+
+ol li {
+  color: darkgreen;
+}
+
+p > a {
+  font-family: "Comic Sans MS";
+}
+
+.foo > a {
+  font-family: sans-serif;
+}
+
+p:hover{
+  background: yellow;
+}
+
+a:active{
+  color: magenta;
+}
+
+input:focus{
+  border: 3px solid red;
+  /*border: 3px dashed red;*/
+  border-radius: 3px;
+  outline: 0 none;
+}

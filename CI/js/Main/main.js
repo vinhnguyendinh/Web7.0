@@ -59,15 +59,33 @@ var create = function(){
     Nakama.bulletGroup = Nakama.game.add.physicsGroup();
     Nakama.playerGroup = Nakama.game.add.physicsGroup();
 
+    Nakama.enemies = [];
+    Nakama.enemies.push(
+      new EnemyController(100, 200, 'EnemyType1.png')
+    );
+
     showPromptToCreateSpace();
 }
 
 // update game state each frame
 var update = function(){
-      backgroundMove()
-      moveOurSpace();
+    backgroundMove()
+    moveOurSpace();
 
-      Nakama.enemy.update();
+    for (enemy of Nakama.enemies) {
+        enemy.update();
+    }
+
+    Nakama.game.physics.arcade.overlap(
+        Nakama.bulletGroup,
+        Nakama.enemyGroup,
+        onBulletHitEnemy
+    );
+}
+
+var onBulletHitEnemy = function(bullet, enemy) {
+    bullet.kill();
+    enemy.damage(1);
 }
 
 // before camera render (mostly for debug)
@@ -84,10 +102,7 @@ function showPromptToCreateSpace() {
         ShipType2Controller,
         ShipType3Controller
     ];
-
     Nakama.players = [];
-
-    Nakama.enemy = new EnemyController(-300, 200, 'EnemyType1.png');
 
     var player1Constructor = getShipConstructor(1, ShipConstructors);
     Nakama.players.push(
