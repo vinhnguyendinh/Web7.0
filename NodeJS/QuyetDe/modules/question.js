@@ -1,26 +1,33 @@
 const express = require('express');
 const path = require('path');
-const router = express.Router();
 const fs = require('fs');
-const utilities = require('../Utilities.js');
+const utilities = require('../modules/utilities.js');
 const questionmodel = require('./QuestionSchema.js')
+const router = express.Router();
 
-
-/// Post
 router.post('/:id', (req, res) => {
   let questionsList = utilities.getQuestionList();
   let id = req.params.id;
   let result = questionsList[id];
 
+  console.log(result);
+  console.log(req.body.answer);
+
   if (req.body.answer == "yes") {
-    result.yes = question.yes ? question.yes+1 : 1;
+    result.yes = result.yes ? result.yes + 1 : 1;
   } else {
-    result.no = question.no ? question.no+1 : 1;
+    result.no = result.no ? result.no + 1 : 1;
   }
 
   questionsList[id] = result;
   utilities.saveQuestionList(questionsList);
   res.redirect(`/question/${id}`);
+})
+
+router.get('/', (req, res) => {
+  res.render('home', {
+    content : "Vinh có đẹp trai không?"
+  })
 })
 
 router.post('/', (req, res) => {
@@ -36,22 +43,5 @@ router.post('/', (req, res) => {
 
   res.send(questionsList);
 })
-
-/// Get
-router.get('/', (req, res) => {
-  //let questionsList = utilities.getQuestionList();
-  res.render('home', {
-    content : "Vinh có đẹp trai không?"
-  })
-})
-
-router.get('/:id', (req, res) => {
-  let questionsList = utilities.getQuestionList();
-  let result = questionsList[req.params.id];
-
-  res.send(result);
-});
-
-
 
 module.exports = router;
