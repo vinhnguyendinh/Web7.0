@@ -2,98 +2,56 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const fs = require('fs');
+const utilities = require('../Utilities.js');
+const questionmodel = require('./QuestionSchema.js')
 
-let fileIndexHtml = path.join(__dirname, '../public/index.html');
 
 /// Post
-router.post('/api/question/0', (req, res) => {
-  let questionsList;
-  try {
-    questionsList = JSON.parse(fs.readFileSync('question.json', 'utf-8'));
-  } catch (exception) {
-    console.log(exception);
-    questionsList = [];
-  }
+router.post('/:id', (req, res) => {
+  let questionsList = utilities.getQuestionList();
+  let id = req.params.id;
+  let result = questionsList[id];
 
-  if (!questionsList) {
-    questionsList = [];
-  }
-
-  question = {
-    content   : req.body.content,
-    yesOrNo   : req.body.submit
-  };
-
-  if (questionsList.length > 0) {
-    questionsList[0] = question;
+  if (req.body.answer == "yes") {
+    result.yes = question.yes ? question.yes+1 : 1;
   } else {
-    questionsList.push(question);
+    result.no = question.no ? question.no+1 : 1;
   }
 
-  fs.writeFileSync('question.json', JSON.stringify(questionsList));
-  res.redirect(`/question/0`);
+  questionsList[id] = result;
+  utilities.saveQuestionList(questionsList);
+  res.redirect(`/question/${id}`);
 })
 
-router.post('/ask', (req, res) => {
-  let questionsList;
-  try {
-    questionsList = JSON.parse(fs.readFileSync('question.json', 'utf-8'));
-  } catch (exception) {
-    console.log(exception);
-    questionsList = [];
-  }
-
-  if (!questionsList) {
-    questionsList = [];
-  }
+router.post('/', (req, res) => {
+  let questionsList = utilities.getQuestionList();
 
   question = {
-    content   : req.body.question,
-    yesOrNo   : ""
+    content   : req.body.question
   };
 
   questionsList.push(question);
-  fs.writeFileSync('question.json', JSON.stringify(questionsList));
-  res.redirect(`/question/${questionsList.length-1}`);
+
+  utilities.saveQuestionList(questionsList);
+
+  res.send(questionsList);
 })
 
 /// Get
-router.get('/ask', (req, res) => {
-  res.sendFile(fileIndexHtml);
+router.get('/', (req, res) => {
+  //let questionsList = utilities.getQuestionList();
+  res.render('home', {
+    content : "Vinh có đẹp trai không?"
+  })
 })
 
-router.get('/api/question/0', (req, res) => {
-  res.sendFile(fileIndexHtml);
-})
+router.get('/:id', (req, res) => {
+  let questionsList = utilities.getQuestionList();
+  let result = questionsList[req.params.id];
 
-router.get('/api/question/:id', (req, res) => {
-  let result = getQuestionAtIndex(req.params.id);
   res.send(result);
 });
 
-router.get('/question/:id', (req, res) => {
-  let result = getQuestionAtIndex(req.params.id);
-  res.send(result);
-});
 
-/// Support
-var getQuestionAtIndex = function(index) {
-  let questionsList;
-  try {
-    questionsList = JSON.parse(fs.readFileSync('question.json', 'utf-8'));
-  } catch (exception) {
-    console.log(exception);
-    questionsList = [];
-  }
-
-  let result;
-  if (index < 0 || index > questionsList.length-1) {
-    result = 'out of bounds';
-  } else {
-    result = questionsList[index];
-  }
-
-  return result;
-}
 
 module.exports = router;

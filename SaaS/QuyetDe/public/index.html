@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quyết đê</title>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="../libs/bootstrap/js/bootstrap.min.js"> -->
+    <script src="../libs/jQuery/jquery.min.js" charset="utf-8"></script>
+    <script src="../libs/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./">Quyết.đê!</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left">
+            <li class="active">
+              <a href="./ask">Hỏi nhanh</a>
+            </li>
+            <li>
+              <a href="./">Đáp gọn</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Hãy hỏi cộng đồng một câu hỏi đúng/sai hoặc có/không</h1>
+      <form method="post" action="./api/question">
+        <div class="form-group">
+          <textarea name="question" id="question" class="form-control" rows="6" maxlength="200"></textarea>
+          <p class="help-block" id="ask_counter">Còn 200/200 ký tự.</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Gửi</button>
+      </form>
+    </div>
+  </body>
+</html>
