@@ -2,10 +2,11 @@ const fs = require('fs');
 const express = require('express');
 const questionRouter = require('./modules/question.js');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const config = require('./helper/config.json');
 const exhbs = require('express-handlebars');
 const utilities = require('./modules/utilities.js');
+const mongoose = require('mongoose');
+const questionModel = require('./modules/questionSchema.js');
 
 let app = express();
 let hbs = exhbs.create({});
@@ -13,14 +14,22 @@ app.use(bodyParser.urlencoded({ extended : true }))
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-
 app.use('/api/question', questionRouter);
 
 app.get('/', (req, res) => {
-  res.render('home', {
-    id      : 0,
-    content : "Có nên bỏ bạn gái không?"
-  })
+  questionModel.find(function (err, questions) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    let randomNumber = utilities.getRandomInt(0, questions.length-1);
+    let result = questions[randomNumber];
+
+    res.render('home', {
+      id      : randomNumber,
+      content : result.content
+    });
+  });
 })
 
 app.get('/ask', (req, res) => {
@@ -28,20 +37,25 @@ app.get('/ask', (req, res) => {
 })
 
 app.use('/question/:id', (req, res) => {
-  let questionList = utilities.getQuestionList();
-  let question = questionList[req.params.id];
+  questionModel.find(function (err, questions) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    let question = questions[req.params.id];
 
-  res.render('question', question);
+    res.render('question', question);
+  });
 })
 
 app.listen(6969, () => {
   console.log('App is running');
 })
 
-// mongoose.connect(config.connectionString, (err) => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log('connect db success');
-//   }
-// })
+mongoose.connect(config.connectionString, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('connect db success');
+  }
+})

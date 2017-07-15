@@ -2,21 +2,25 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let questionSchema = new Schema({
+  _id : {
+    type : Number
+  },
   content : {
     type : String,
     require : true,
     default : ''
   },
-  answer : {
+  yes : {
     type : Number,
+    default : 0
+  },
+  no : {
+    type : Number,
+    default : 0
   },
   date : {
-    type : Date,
+    type : Date
   }
 }, { collection : 'questions'});
 
-mongoose.model('questions', questionSchema);
-
-module.exports = {
-  questionSchema
-}
+module.exports = mongoose.model('questions', questionSchema);
