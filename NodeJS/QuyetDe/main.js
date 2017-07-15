@@ -37,13 +37,10 @@ app.get('/ask', (req, res) => {
 })
 
 app.use('/question/:id', (req, res) => {
-  questionModel.find(function (err, questions) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    let question = questions[req.params.id];
+  let id = req.params.id;
+  let query = { _id: id};
 
+  questionModel.findOne(query, (err, question) => {
     res.render('question', question);
   });
 })
