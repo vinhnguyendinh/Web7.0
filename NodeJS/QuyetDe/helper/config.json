@@ -1,3 +1,3 @@
 {
-  "connectionString"  : "mongodb://localhost/quyetde"
+  "connectionString"  : "mongodb://admin:vinhuml1996@ds147842.mlab.com:47842/quyetde"
 }

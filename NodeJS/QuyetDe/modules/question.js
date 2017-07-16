@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
       return;
     }
     let randomNumber = utilities.getRandomInt(0, questions.length-1);
-    let result = questions[randomNumber];
+    let result = questionMap[randomNumber];
 
     res.render('home', {
       id      : randomNumber,

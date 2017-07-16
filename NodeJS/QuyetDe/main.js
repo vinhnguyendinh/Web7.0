@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const questionModel = require('./modules/questionSchema.js');
 
 let app = express();
-let hbs = exhbs.create({});
+let hbs = exhbs.create({ defaultLayout : 'main' });
 app.use(bodyParser.urlencoded({ extended : true }))
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -22,13 +22,21 @@ app.get('/', (req, res) => {
       console.error(err);
       return;
     }
-    let randomNumber = utilities.getRandomInt(0, questions.length-1);
-    let result = questions[randomNumber];
+    if (!questions) {
+      console.log("QUESTION MODEL IS NOT DEFINE");
+      res.render('home', {
+        id      : 0,
+        content : "QUESTION MODEL IS NOT DEFINE"
+      });
+    } else {
+      let randomNumber = utilities.getRandomInt(0, questions.length-1);
+      let result = questions[randomNumber];
 
-    res.render('home', {
-      id      : randomNumber,
-      content : result.content
-    });
+      res.render('home', {
+        id      : randomNumber,
+        content : result.content
+      });
+    }
   });
 })
 
@@ -45,7 +53,7 @@ app.use('/question/:id', (req, res) => {
   });
 })
 
-app.listen(6969, () => {
+app.listen(process.env.PORT || 6969, () => {
   console.log('App is running');
 })
 
