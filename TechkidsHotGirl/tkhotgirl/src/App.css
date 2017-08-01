@@ -2,6 +2,10 @@ html{
   background: #dcdcdc;
 }
 
+body{
+  background: transparent;
+}
+
 .Header{
   background: #ffffff;
   position: fixed;
@@ -9,6 +13,7 @@ html{
   left: 0;
   right: 0;
   padding: 15px 0;
+  z-index: 1;
 }
 
 .SearchBar{
@@ -72,4 +77,8 @@ html{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.Body .container{
+  padding-top: 75px;
 }
