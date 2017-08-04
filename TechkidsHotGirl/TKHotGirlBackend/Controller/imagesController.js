@@ -4,6 +4,7 @@ const Router = express.Router();
 const imagesModel = require('../Model/imagesModel');
 
 const numberImagesPerPage = 20;
+const getAll = 'getAll';
 
 // TODO create 4 method basic
 
@@ -20,29 +21,30 @@ Router.post('/', (req, res) => {
   });
 });
 
-// GET: :id : Get image with id
+// GET: :id : Get image with id or get all image
 Router.get('/:id', (req, res) => {
-  imagesModel.GetImageWithId(req.params.id, (err, image) => {
-    if (err) {
-      res.status(500);
-      res.send('Error');
-    } else {
-      res.status(200);
-      res.send(image);
-    }
-  });
-});
-
-Router.get('/getAll', (req, res) => {
-  imagesModel.GetAllImage(numberImagesPerPage, (err, images) => {
-    if (err) {
-      res.status(500);
-      res.send('Error');
-    } else {
-      res.status(200);
-      res.send(images);
-    }
-  });
+  let params = req.params.id;
+  if (params == getAll) {
+    imagesModel.GetAllImage(numberImagesPerPage, (err, images) => {
+      if (err) {
+        res.status(500);
+        res.send('Error');
+      } else {
+        res.status(200);
+        res.send(images);
+      }
+    });
+  } else {
+    imagesModel.GetImageWithId(params, (err, image) => {
+      if (err) {
+        res.status(500);
+        res.send('Error');
+      } else {
+        res.status(200);
+        res.send(image);
+      }
+    });
+  }
 });
 
 Router.get('/getAll/:id', (req, res) => {
