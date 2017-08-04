@@ -72,6 +72,25 @@ const GetImageWithId = function(id, callback) {
   });
 }
 
+const GetAllImage = function(maximumImage, callback) {
+  imagesModel.find().limit(maximumImage).sort({ createdAt: -1}).exec((err, images) => {
+   if (err) {
+     callback(err);
+   } else {
+     callback(null, images);
+   }
+  });
+}
+
+const GetAllImageWithPage = function(page, maximumImage, callback) {
+  imagesModel.find().limit(maximumImage).sort({ createdAt: -1}).skip((page-1) * maximumImage).exec((err, images) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, images);
+    }
+  });
+}
 // Update image
 const UpdateImageWithId = function(id, otherImage, callback) {
   imagesModel.findById(id, (err, image) => {
@@ -115,6 +134,8 @@ const DeleteImageWithId = function(id, callback) {
 module.exports = {
   CreateImage,
   GetImageWithId,
+  GetAllImage,
+  GetAllImageWithPage,
   UpdateImageWithId,
   DeleteImageWithId
 }
