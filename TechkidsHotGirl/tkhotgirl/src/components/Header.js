@@ -10,7 +10,7 @@ class Header extends Component {
         <div className="container">
           <div className="row">
             <div className="col-sm-3">
-              <SearchBar />
+              <SearchBar searchFunction={this.props.searchFunction} />
             </div>
             <div className="col-sm-6 logo">
               <img src="http://techkids.vn/images/TechkidBrandColor.png" alt="TechKids" width="180" />

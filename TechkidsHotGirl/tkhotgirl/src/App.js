@@ -6,11 +6,26 @@ import Header from './components/Header';
 import Body from './components/Body';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      searchString : ''
+    }
+
+    this.updateSearchString = this.updateSearchString.bind(this);
+  }
+
+  updateSearchString(newSearchString) {
+    this.setState({
+      searchString : newSearchString
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <Header />
-        <Body />
+        <Header searchFunction={this.updateSearchString}/>
+        <Body searchString={this.state.searchString}/>
       </div>
     );
   }
