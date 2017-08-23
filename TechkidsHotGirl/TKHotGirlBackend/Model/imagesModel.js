@@ -35,7 +35,8 @@ const imagesSchema = new Schema({
     type : Date,
     default : Date.now
   }
-}, { collection: 'images' });
+}, { collection: 'images' }, { timestamps: {} }
+});
 
 const imagesModel = mongoose.model('images', imagesSchema);
 

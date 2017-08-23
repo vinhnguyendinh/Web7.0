@@ -5,8 +5,49 @@
     <title></title>
   </head>
   <body>
-    <form class="" action="index.html" method="post">
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect();
 
+      socket.emit('connect', (username) => {
+        socketList.push({ username: username.username, socket: socket.id });
+        console.log('Socket list: ', socketList);
+      });
+      socket.on('Response', (message) => {
+        console.log(message);
+      })
+      socket.on('GotMessage', (object) => {
+        console.log(object);
+      })
+      socket.on('Broadcast', (message) => {
+        console.log(message);
+      });
+
+      socket.on('RoomMessage', (message) => {
+        console.log(message);
+      })
+
+      function connectSocket() {
+        console.log('connect');
+        var userName = document.getElementById("usernameInput").value;
+        socket.emit('connectSocket', {username: userName});
+      }
+
+      function pressButton() {
+        console.log('Event');
+        socket.emit('ButtonPressed', 'Here is the button');
+        socket.emit('Join', { roomName: room})
+      }
+
+      function messageToRoom() {
+        socket.emit('messageToRoom', { message: 'Only to room', room: 'Test room' });
+      }
+
+    </script>
+    <form class="" action="index.html" method="post">
+      <button type="button" name="button" onclick="messageToRoom()">
+        Message to room
+      </button>
     </form>
   </body>
 </html>

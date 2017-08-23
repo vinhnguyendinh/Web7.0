@@ -12,6 +12,7 @@
     "bcrypt": "^1.0.2",
     "express": "^4.15.3",
     "express-formidable": "^1.0.0",
-    "mongoose": "^4.11.4"
+    "mongoose": "^4.11.4",
+    "socket.io": "^2.0.3"
   }
 }
